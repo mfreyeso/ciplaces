@@ -11,8 +11,8 @@ class CollectivePlaces(object):
     def place_details(self, placeid):
         return self.client.place(placeid, language=self.language)
 
-    def search_places_nearby(self, location, keyword,
-                             min_price=0, max_price=4, type_rank):
+    def search_places_nearby(self, location, keyword, type_rank,
+                             min_price=0, max_price=4):
 
         return self.client.places_nearby(location, keyword=keyword,
                                          language=self.language,
