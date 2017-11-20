@@ -16,14 +16,14 @@ class CollectivePlaces(object):
 
         return self.client.places_nearby(location, keyword=keyword,
                                          language=self.language,
-                                         min_price=min_price=0,
+                                         min_price=min_price,
                                          max_price=max_price,
                                          rank_by=type_rank)
 
     def search_places_radar(self, location, keyword, min_price=0, max_price=4):
         return self.client.places_radar(location, self.radius,
                                         keyword=keyword,
-                                        min_price=min_price=0,
+                                        min_price=min_price,
                                         max_price=max_price)
 
     def search_places_by_text(self, textplace, location, min_price=0, max_price=4):
