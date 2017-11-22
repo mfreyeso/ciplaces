@@ -6,7 +6,7 @@ class CollectivePlaces(object):
     def __init__(self, apikey):
         self.client = googlemaps.Client(key=apikey)
         self.language = 'en'
-        self.radius = 200
+        self.radius = 1000
 
     def place_details(self, placeid):
         return self.client.place(placeid, language=self.language)
