@@ -101,5 +101,5 @@ ENV/
 .mypy_cache/
 
 apicredentials.ini
-*.csv
+p*.csv
 .DS_Store
