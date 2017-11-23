@@ -48,20 +48,20 @@ def pulling_data(place, num_items):
     place_store = dict()
     handler = HandlerData()
     handler.loadconfig()
-    
+
     geocode = handler.search_location(place)
 
-    parameters = {'min_price':None, 'max_price':None}
-    place_types = ['university', 'hospital', 'bank', 'restaurant', 
+    parameters = {'min_price': None, 'max_price': None}
+    place_types = ['university', 'hospital', 'bank', 'restaurant',
              'store', 'bar', 'cafe']
 
     for tp in place_types:
-        places = handler.search_places_radar(geocode, tp, **parameters)  
+        places = handler.search_places_radar(geocode, tp, **parameters)
         print("Places Found: %s" % len(places))
-        
+
         places_details = list()
         count = ind = 0
-        
+
         while (count < num_items and ind < len(places)):
             placed = places[ind]
             detail = handler.get_place_information(placed['place_id'])
@@ -69,26 +69,44 @@ def pulling_data(place, num_items):
                 place_store[placed['place_id']] = detail
                 count += 1
 
-            ind +=1
+            ind += 1
 
     return place_store
- 
+
+
+def write_places(filename, dict_data, header):
+    try:
+        with open(filename, 'a') as f:
+            w = csv.DictWriter(f, header)
+            w.writeheader()
+            
+            for key, value in dict_data.items():
+                w.writerow(value)
+    except IOError:
+        print("I/O error", filename)
+    return
+
 
 def main():
     handler = HandlerData()
     handler.loadconfig()
-    end_nodes = ['Washington St, Boston MA', 'Massachusetts Ave', 
+
+    header = ['address_components','adr_address','formatted_address',
+                  'formatted_phone_number','geometry','icon','id',
+                  'international_phone_number','name','opening_hours',
+                  'photos','place_id','price_level','rating','reference',
+                  'reviews','scope','types','url','utc_offset','vicinity',
+                  'website']
+
+    end_nodes = ['Washington St', 'Massachusetts Ave', 
                  'Blue Hill Ave', 'Dorchester Ave', 'Tremont St']
     
     for node in end_nodes:
-        
+        node = node + ', Boston MA'
         place_store = pulling_data(node, 100)
         filename = "places_%s.csv" % node.split(" ")[0]
-        
-        with open(filename, 'w') as f:
-            w = csv.DictWriter(f, place_store.keys())
-            w.writeheader()
-            w.writerow(place_store)
+
+        write_places(filename, place_store, header)
 
 
 if __name__ == '__main__':
